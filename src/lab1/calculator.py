@@ -35,7 +35,7 @@ def mega(s):
                     break
             vir = dell(s[l:r])
             s = s[:l] + str(vir) + s[r:]
-            print(s)
+
             r = 0
             l = 0
         if s[r] == "*":
@@ -48,7 +48,7 @@ def mega(s):
                     break
             vir = umn(s[l:r])
             s = s[:l] + str(vir) + s[r:]
-            print(s)
+
             r = 0
             l = 0
         r += 1
@@ -62,7 +62,7 @@ def mega(s):
                     break
             vir = minus(s[l:r])
             s = s[:l] + str(vir) + s[r:]
-            print(s)
+
             r = 0
             l = 0
         if s[r] == "+":
@@ -73,7 +73,7 @@ def mega(s):
                     break
             vir = summ(s[l:r])
             s = s[:l] + str(vir) + s[r:]
-            print(s)
+
             r = 0
             l = 0
         r += 1
@@ -90,11 +90,10 @@ def algoritm(s):
                 L = R
         vir = mega(s[L+1:R])
         s = s[:L] + str(vir) + s[R+1:]
-        print(s)
     return mega(s)
 
 
 
-print(algoritm("(325-12*(4-4))/(5+8*5-40)*200"))
+print(algoritm(input()))
 
 
