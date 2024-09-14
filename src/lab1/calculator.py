@@ -1,99 +1,105 @@
+""" калькулятор способен считать значения
+многоступенчатых выражений по типу
+(4234/(213+122*213)*213/(231-23*4))"""
+def dell(string):
+    """фукция деления"""
+    return float(string.split("/")[0]) / float(string.split("/")[1])
 
 
-
-def dell(s):
-    return float(s.split("/")[0]) / float(s.split("/")[1])
-
-
-def umn(s):
-    return float(s.split("*")[0]) * float(s.split("*")[1])
-
-def summ(s):
-    return float(s.split("+")[0]) + float(s.split("+")[1])
-def minus(s):
-    return float(s.split("-")[0]) - float(s.split("-")[1])
+def umn(string):
+    """фукция умножения"""
+    return float(string.split("*")[0]) * float(string.split("*")[1])
 
 
-def mega(s):
-    l = 0
-    r = 0
-    while s.count("*") + s.count("/") > 0:
+def summ(string):
+    """ фукция суммирования"""
+    return float(string.split("+")[0]) + float(string.split("+")[1])
 
-        if s[r] in "+-":
-            r += 1
-            l = r
 
-        if s[r] == "/":
-            r += 1
+def minus(string):
+    """фукция вычетания"""
+    return float(string.split("-")[0]) - float(string.split("-")[1])
 
-            if s[r]=="-":
-                r+=1
 
-            while s[r] in "0123456789.,":
-                r += 1
-                if len(s) == r:
+def mega(string):
+    """производит операцию над простым выражением (без скобок)"""
+    left = 0
+    right = 0
+    while string.count("*") + string.count("/") > 0:
+
+        if string[right] in "+-":
+            right += 1
+            left = right
+
+        if string[right] == "/":
+            right += 1
+
+            if string[right] == "-":
+                right += 1
+
+            while string[right] in "0123456789.,":
+                right += 1
+                if len(string) == right:
                     break
-            vir = dell(s[l:r])
-            s = s[:l] + str(vir) + s[r:]
+            vir = dell(string[left:right])
+            string = string[:left] + str(vir) + string[right:]
 
-            r = 0
-            l = 0
-        if s[r] == "*":
-            if s[r]=="-":
-                r+=1
-            r += 1
-            while s[r] in "0123456789.,":
-                r += 1
-                if len(s) == r:
+            right = 0
+            left = 0
+        if string[right] == "*":
+            if string[right] == "-":
+                right += 1
+            right += 1
+            while string[right] in "0123456789.,":
+                right += 1
+                if len(string) == right:
                     break
-            vir = umn(s[l:r])
-            s = s[:l] + str(vir) + s[r:]
+            vir = umn(string[left:right])
+            string = string[:left] + str(vir) + string[right:]
 
-            r = 0
-            l = 0
-        r += 1
-    while (s.count("+") + s.count("-")-s[0].count("-")) > 0:
+            right = 0
+            left = 0
+        right += 1
+    while (string.count("+") + string.count("-") - string[0].count("-")) > 0:
 
-        if s[r] == "-":
-            r += 1
-            while s[r] in "0123456789.,":
-                r += 1
-                if len(s) == r:
+        if string[right] == "-":
+            right += 1
+            while string[right] in "0123456789.,":
+                right += 1
+                if len(string) == right:
                     break
-            vir = minus(s[l:r])
-            s = s[:l] + str(vir) + s[r:]
+            vir = minus(string[left:right])
+            string = string[:left] + str(vir) + string[right:]
 
-            r = 0
-            l = 0
-        if s[r] == "+":
-            r += 1
-            while s[r] in "0123456789.,":
-                r += 1
-                if len(s) == r:
+            right = 0
+            left = 0
+        if string[right] == "+":
+            right += 1
+            while string[right] in "0123456789.,":
+                right += 1
+                if len(string) == right:
                     break
-            vir = summ(s[l:r])
-            s = s[:l] + str(vir) + s[r:]
+            vir = summ(string[left:right])
+            string = string[:left] + str(vir) + string[right:]
 
-            r = 0
-            l = 0
-        r += 1
-    return s
-
-
-def algoritm(s):
-    while s.count("(") + s.count(")") > 0:
-        L = 0
-        R = 0
-        while s[R]!=")":
-            R += 1
-            if s[R] == "(":
-                L = R
-        vir = mega(s[L+1:R])
-        s = s[:L] + str(vir) + s[R+1:]
-    return mega(s)
+            right = 0
+            left = 0
+        right += 1
+    return string
 
 
+def algorithm(string):
+    """алгоритм - ищет вложенные выражения и производит операции над ними"""
+    while string.count("(") + string.count(")") > 0:
+        left = 0
+        right = 0
+        while string[right] != ")":
+            right += 1
+            if string[right] == "(":
+                left = right
+        vir = mega(string[left + 1: right])
+        string = string[:left] + str(vir) + string[right + 1:]
+    return mega(string)
 
-print(algoritm(input()))
 
-
+print(algorithm(input()))
