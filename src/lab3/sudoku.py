@@ -89,11 +89,12 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     pos_y: int = pos[1] // 3
     array_tmp = []
     array = []
-    for x in range(pos_x*3, pos_x * 3 + 3):
+    for x in range(pos_x * 3, pos_x * 3 + 3):
         array_tmp.append(group(grid[x], 3))
     for y in range(3):
         array += array_tmp[y][pos_y]
     return array
+
 
 def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[int, int]]:
     """Найти первую свободную позицию в пазле
@@ -104,8 +105,8 @@ def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[in
     >>> find_empty_positions([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']])
     (2, 0)
     """
-    for x_pos in range(len(grid)):
-        for y_pos in range(len(grid)):
+    for x_pos in range(len(list(grid))):
+        for y_pos in range(len(list(grid))):
             if grid[x_pos][y_pos] == ".":
                 return x_pos, y_pos
 
@@ -120,11 +121,17 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
     >>> values == {'2', '5', '9'}
     True
     """
-    return {'1', '2', '3', '4', '5', '6', '7', '8', '9'} - set(list(get_block(grid, pos))) - set(list(get_col(grid, pos))) - set(list(get_row(grid, pos)))
+    return {'1', '2', '3', '4', '5', '6', '7', '8', '9'} - set(list(get_block(grid, pos))) - set(
+        list(get_col(grid, pos))) - set(list(get_row(grid, pos)))
+
+
+def f(array, x, y, i):
+    array[int(x)][int(y)] = i
+    # print(array)
+    return array
 
 
 def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
-    """ Решение пазла, заданного в grid """
     """ Как решать Судоку?
         1. Найти свободную позицию
         2. Найти все возможные значения, которые могут находиться на этой позиции
@@ -135,13 +142,33 @@ def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
     >>> solve(grid)
     [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
     """
-    pass
+    e_p = find_empty_positions(grid)
+
+    if e_p is None:
+        if check_solution(grid):
+            return grid
+
+    # display(grid)
+
+    array = list(find_possible_values(grid, e_p))
+
+    for i in array:
+        return solve(f(grid, e_p[0], e_p[1], i))
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
     """ Если решение solution верно, то вернуть True, в противном случае False """
     # TODO: Add doctests with bad puzzles
-    pass
+
+    for x_pos in range(len(list(solution))):
+        for y_pos in range(len(solution)):
+            if len(set(get_col(solution, (x_pos, y_pos)))) != 9:
+                return False
+            if len(set(get_row(solution, (x_pos, y_pos)))) != 9:
+                return False
+            if len(set(get_block(solution, (x_pos, y_pos)))) != 9:
+                return False
+    return True
 
 
 def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
