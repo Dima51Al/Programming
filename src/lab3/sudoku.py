@@ -1,4 +1,6 @@
+import copy
 import pathlib
+import time
 import typing as tp
 
 T = tp.TypeVar("T")
@@ -96,7 +98,7 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     return array
 
 
-def find_empty_positions(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.Tuple[int, int]]:
+def find_empty_positions(grid: tp.List[tp.List[str]]):
     """Найти первую свободную позицию в пазле
     >>> find_empty_positions([['1', '2', '.'], ['4', '5', '6'], ['7', '8', '9']])
     (0, 2)
@@ -125,35 +127,30 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
         list(get_col(grid, pos))) - set(list(get_row(grid, pos)))
 
 
-def f(array, x, y, i):
+def replace_value(grid, x, y, i):
+    array = copy.deepcopy(grid)
     array[int(x)][int(y)] = i
     # print(array)
     return array
 
 
-def solve(grid: tp.List[tp.List[str]]) -> tp.Optional[tp.List[tp.List[str]]]:
-    """ Как решать Судоку?
-        1. Найти свободную позицию
-        2. Найти все возможные значения, которые могут находиться на этой позиции
-        3. Для каждого возможного значения:
-            3.1. Поместить это значение на эту позицию
-            3.2. Продолжить решать оставшуюся часть пазла
-    >>> grid = read_sudoku('puzzle1.txt')
-    >>> solve(grid)
-    [['5', '3', '4', '6', '7', '8', '9', '1', '2'], ['6', '7', '2', '1', '9', '5', '3', '4', '8'], ['1', '9', '8', '3', '4', '2', '5', '6', '7'], ['8', '5', '9', '7', '6', '1', '4', '2', '3'], ['4', '2', '6', '8', '5', '3', '7', '9', '1'], ['7', '1', '3', '9', '2', '4', '8', '5', '6'], ['9', '6', '1', '5', '3', '7', '2', '8', '4'], ['2', '8', '7', '4', '1', '9', '6', '3', '5'], ['3', '4', '5', '2', '8', '6', '1', '7', '9']]
-    """
+def take_solution(array) -> tp.Optional[tp.List[tp.List[str]]]:
+    for i in array:
+        if i != -1 and not (i is None):
+            return i
+
+
+def solve(grid: tp.List[tp.List[str]]):
+
     e_p = find_empty_positions(grid)
 
     if e_p is None:
-        if check_solution(grid):
-            return grid
-
-    # display(grid)
+        return grid
 
     array = list(find_possible_values(grid, e_p))
-
-    for i in array:
-        return solve(f(grid, e_p[0], e_p[1], i))
+    if len(array) == 0:
+        return -1
+    return take_solution([solve(replace_value(grid, e_p[0], e_p[1], i)) for i in array])
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
@@ -162,6 +159,8 @@ def check_solution(solution: tp.List[tp.List[str]]) -> bool:
 
     for x_pos in range(len(list(solution))):
         for y_pos in range(len(solution)):
+            if solution[x_pos][y_pos] == ".":
+                return False
             if len(set(get_col(solution, (x_pos, y_pos)))) != 9:
                 return False
             if len(set(get_row(solution, (x_pos, y_pos)))) != 9:
@@ -199,8 +198,10 @@ if __name__ == "__main__":
     for fname in ["puzzle1.txt", "puzzle2.txt", "puzzle3.txt"]:
         grid = read_sudoku(fname)
         display(grid)
+        tmp = time.time()
         solution = solve(grid)
         if not solution:
             print(f"Puzzle {fname} can't be solved")
         else:
             display(solution)
+        print(time.time() - tmp)
