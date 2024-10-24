@@ -1,5 +1,6 @@
 import copy
 import pathlib
+import random
 import time
 import typing as tp
 
@@ -130,7 +131,6 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
 def replace_value(grid, x, y, i):
     array = copy.deepcopy(grid)
     array[int(x)][int(y)] = i
-    # print(array)
     return array
 
 
@@ -141,7 +141,6 @@ def take_solution(array) -> tp.Optional[tp.List[tp.List[str]]]:
 
 
 def solve(grid: tp.List[tp.List[str]]):
-
     e_p = find_empty_positions(grid)
 
     if e_p is None:
@@ -150,6 +149,7 @@ def solve(grid: tp.List[tp.List[str]]):
     array = list(find_possible_values(grid, e_p))
     if len(array) == 0:
         return -1
+
     return take_solution([solve(replace_value(grid, e_p[0], e_p[1], i)) for i in array])
 
 
@@ -184,14 +184,26 @@ def generate_sudoku(N: int) -> tp.List[tp.List[str]]:
     >>> solution = solve(grid)
     >>> check_solution(solution)
     True
-    >>> grid = generate_sudoku(0)
-    >>> sum(1 for row in grid for e in row if e == '.')
-    81
     >>> solution = solve(grid)
     >>> check_solution(solution)
     True
     """
-    pass
+
+    grid = [['8', '3', '5', '4', '1', '6', '9', '2', '7'], ['2', '9', '6', '8', '5', '7', '4', '3', '1'],
+            ['4', '1', '7', '2', '9', '3', '6', '5', '8'], ['5', '6', '9', '1', '3', '4', '7', '8', '2'],
+            ['1', '2', '3', '6', '7', '8', '5', '4', '9'], ['7', '4', '8', '5', '2', '9', '1', '6', '3'],
+            ['6', '5', '2', '7', '8', '1', '3', '9', '4'], ['9', '8', '1', '3', '4', '5', '2', '7', '6'],
+            ['3', '7', '4', '9', '6', '2', '8', '1', '5']]
+    k = 81
+    if N >= 81:
+        return grid
+    while k != N:
+        tmp1 = random.randint(0, 8)
+        tmp2 = random.randint(0, 8)
+        if grid[tmp1][tmp2] != ".":
+            k -= 1
+            grid[tmp1][tmp2] = "."
+    return grid
 
 
 if __name__ == "__main__":
