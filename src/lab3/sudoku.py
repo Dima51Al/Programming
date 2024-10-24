@@ -154,9 +154,6 @@ def solve(grid: tp.List[tp.List[str]]):
 
 
 def check_solution(solution: tp.List[tp.List[str]]) -> bool:
-    """ Если решение solution верно, то вернуть True, в противном случае False """
-    # TODO: Add doctests with bad puzzles
-
     for x_pos in range(len(list(solution))):
         for y_pos in range(len(solution)):
             if solution[x_pos][y_pos] == ".":
