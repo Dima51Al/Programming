@@ -69,14 +69,10 @@ class Alive:
                     return self.age_group_for_view[index]
             return self.age_group_for_view[-1]
 
-
-
-
     class Human:
         def __init__(self, name="Ivan Ivanov", age=18):
             self.name = name
             self.age = age
-
 
             self.age_group = Alive.group.which_group(self.age) if Alive.group else "(no group)"
 
@@ -109,6 +105,7 @@ def main():
 
 
 def main_str(input_string):
+    answer = ""
     users_array = []
     Alive.initialize_group()
 
@@ -129,7 +126,8 @@ def main_str(input_string):
             if user.age_group == tmp_group:
                 tmp_group_arr.append(f"{user.name} ({user.age})")
         if len(tmp_group_arr) != 0:
-            print(f"{tmp_group}: {str(tmp_group_arr)[1:-1]}".replace("\'", ""))
+            answer += f"{tmp_group}: {str(tmp_group_arr)[1:-1].replace("\'", "")}\n"
+    return answer
 
 
 if __name__ == '__main__':
