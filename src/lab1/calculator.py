@@ -101,5 +101,3 @@ def algorithm(string):
         string = string[:left] + str(vir) + string[right + 1:]
     return mega(string)
 
-
-print(algorithm(input()))
