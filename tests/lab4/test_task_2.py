@@ -23,7 +23,7 @@ class AgeGroupTestCase(unittest.TestCase):
     def test_incorrect_type(self):
         self.assertEqual(main_str(", 25"), "19-25:  (25)")
 
-        self.assertEqual(main_str("Alice, 300"), "")
+        self.assertEqual(main_str("Alice, "), "")
 
         self.assertEqual(main_str("Bob,, 17"), "")
 

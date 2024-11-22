@@ -93,5 +93,11 @@ class Methods:
         return Methods.film_by_id(final_film_id)
 
 
+def main(array):
+    return Methods.recommendation_by_user(array).strip()
 
-print(Methods.recommendation_by_user([2, 4]))
+
+if __name__ == '__main__':
+    print(main([2, 4]))
+
+
