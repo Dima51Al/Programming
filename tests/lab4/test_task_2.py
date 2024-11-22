@@ -1,5 +1,5 @@
 import unittest
-from src.lab4.task2.main import main_str
+from src.lab4.task2 import main_str
 
 
 class AgeGroupTestCase(unittest.TestCase):
