@@ -126,10 +126,10 @@ def main_str(input_string):
             if user.age_group == tmp_group:
                 tmp_group_arr.append(f"{user.name} ({user.age})")
         if len(tmp_group_arr) != 0:
-            answer += f"{tmp_group}: {str(tmp_group_arr)[1:-1].replace("\'", "")}\n"
-    return answer.replace("\n", "")
+            formal_view = str(tmp_group_arr)[1:-1].replace("\'", "")
+            answer += f"{tmp_group}: {formal_view}\n"
+    return answer.rstrip('\n')
 
 
 if __name__ == '__main__':
-
     main()
