@@ -127,7 +127,7 @@ def main_str(input_string):
                 tmp_group_arr.append(f"{user.name} ({user.age})")
         if len(tmp_group_arr) != 0:
             answer += f"{tmp_group}: {str(tmp_group_arr)[1:-1].replace("\'", "")}\n"
-    return answer
+    return answer.replace("\n", "")
 
 
 if __name__ == '__main__':
