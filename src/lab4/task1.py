@@ -1,7 +1,7 @@
 class Sokol:
 
-    path_history = "history.txt"
-    path_films = "films.txt"
+    path_history = "История просмотров по всем пользователям сервиса.txt"
+    path_films = "Список доступных фильмов.txt"
 
     @classmethod
     def init_path(cls, path_history, path_films):
@@ -51,7 +51,7 @@ class Sokol:
             except IndexError:
                 raise ValueError(f"Нет данных для user_id={user_id}")
             except FileNotFoundError:
-                raise ValueError("Файл history.txt не найден")
+                raise ValueError("Файл История просмотров по всем пользователям сервиса.txt не найден")
 
         @staticmethod
         def film_by_id(film_id) -> str:
@@ -110,6 +110,6 @@ def main(array, path_history,  path_films, ):
 
 if __name__ == '__main__':
 
-    print(main([2, 4], "history.txt", "films.txt"))
+    print(main([2, 4], "История просмотров по всем пользователям сервиса.txt", "Список доступных фильмов.txt"))
 
 
