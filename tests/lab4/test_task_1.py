@@ -1,10 +1,10 @@
 import unittest
-from src.lab4.task1.main import main
+from src.lab4.task1 import main
 
 
 class TestRecommendations(unittest.TestCase):
-    path_history = "../../src/lab4/task1/history.txt"
-    path_films = "../../src/lab4/task1/films.txt"
+    path_history = "../../src/lab4/history.txt"
+    path_films = "../../src/lab4/films.txt"
 
     def test_main_with_positive(self):
         input_data = [1, 2, 3, 4, 5]
