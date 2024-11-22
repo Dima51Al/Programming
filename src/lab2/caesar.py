@@ -11,7 +11,18 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     ''
     """
     ciphertext = ""
-    # PUT YOUR CODE HERE
+    for i in plaintext:
+        time = ord(i)
+        if 65 <= time <= 90:
+            c = ((time - 65) + shift) % 26 + 65
+            ciphertext += chr(c)
+        elif 97 <= time <= 122:
+            c = ((time - 97) + shift) % 26 + 97
+            ciphertext += chr(c)
+        else:
+            ciphertext +=i
+
+
     return ciphertext
 
 
@@ -28,5 +39,15 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     ''
     """
     plaintext = ""
-    # PUT YOUR CODE HERE
+    for i in ciphertext:
+        time = ord(i)
+        if 65 <= time <= 90:
+            c = ((time - 65) - shift) % 26 + 65
+            plaintext += chr(c)
+        elif 97 <= time <= 122:
+            c = ((time - 97) - shift) % 26 + 97
+            plaintext += chr(c)
+        else:
+            plaintext += i
+
     return plaintext
