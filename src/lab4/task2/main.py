@@ -112,7 +112,7 @@ def main_str(input_string):
     lines = input_string.strip().split("\n")
 
     for string in lines:
-        if string.count(",") == 0:
+        if string.count(",") != 1:
             continue
         input_arr = string.split(",")
         tmp_name = input_arr[0].strip()
