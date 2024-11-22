@@ -116,7 +116,11 @@ def main_str(input_string):
             continue
         input_arr = string.split(",")
         tmp_name = input_arr[0].strip()
-        tmp_age = int(input_arr[1].strip())
+        if input_arr[1].strip().isdigit():
+            tmp_age = int(input_arr[1].strip())
+        else:
+            continue
+
         users_array.append(Alive.Human(tmp_name, tmp_age))
 
     group = Alive.AgeGroup().age_group_for_view
