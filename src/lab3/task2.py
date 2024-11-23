@@ -73,7 +73,6 @@ class Alive:
         def __init__(self, name="Ivan Ivanov", age=18):
             self.name = name
             self.age = age
-
             self.age_group = Alive.group.which_group(self.age) if Alive.group else "(no group)"
 
         def stats(self):
