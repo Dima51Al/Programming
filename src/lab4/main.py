@@ -6,7 +6,7 @@ class Shop:
     path_output_error = "non_valid_orders.txt"
     orders_array_not_ru = []
     orders_array_ru = []
-    orders_array = []
+    orders_array = None
 
     input_array = None
 
@@ -26,7 +26,7 @@ class Shop:
         file.close()
 
     def sort(self):
-        """Быстрая сортировка по странам"""
+        """Быстрая сортировка сначала по priority, затем по country"""
 
         def swap(array, i, j):
             array[i], array[j] = array[j], array[i]
@@ -91,23 +91,38 @@ class Shop:
         quicksort_prioritet(self.orders_array_ru, 0, len(self.orders_array_ru) - 1)
         self.orders_array = self.orders_array_ru + self.orders_array_not_ru
 
-    def __init__(self):
-        self.read_order()
-        self.clear_error_file()
-        for order in self.input_array:
+    def __init__(self, from_file=True, array=None):
+        self.orders_array_not_ru = []
+        self.orders_array_ru = []
+        self.orders_array = None
 
+        if from_file:
+            self.read_order()
+            self.clear_error_file()
+        else:
+            self.input_array = array
+
+        for order in self.input_array:
             order_elem = self.Order(order)
 
-            if order_elem.is_error == 0:
+            if order_elem.is_valid:
                 if order_elem.order_country == "Россия":
                     self.orders_array_ru.append(order_elem)
                 else:
                     self.orders_array_not_ru.append(order_elem)
+            else:
+                if from_file:
+                    file = open(self.path_output_error, "a", encoding="utf-8")
+                    file.write(order_elem.error_text)
+                    file.close()
+
         self.sort()
-        self.info()
-        self.write()
+
+        if from_file:
+            self.write()
 
     def info(self):
+        """id, counry, priority"""
         for order in self.orders_array:
             print(order.order_id, order.order_country, order.order_prioritet)
 
@@ -148,18 +163,17 @@ class Shop:
         order_country = None
         order_adress_without_country = None
 
-        is_error = None
+        is_valid = None
+        error_text = ""
 
         path_output_error = "non_valid_orders.txt"
 
         def error_write(self, error_id, error_text):
             """error_id - 0:no error; 1: adress; 2:phone"""
+
             if error_text == "":
                 error_text = "no data"
-            answer = f"{self.order_id};{error_id};{error_text}\n"
-
-            file = open(self.path_output_error, "a", encoding="utf-8")
-            file.write(answer)
+            self.error_text += f"{self.order_id};{error_id};{error_text}\n"
 
         def check_errors(self):
             """
@@ -179,7 +193,7 @@ class Shop:
             if not is_phone_valid:
                 self.error_write(2, self.order_phone_number)
 
-            self.is_error = (not is_address_valid) or (not is_phone_valid)
+            self.is_valid = is_address_valid and is_phone_valid
 
         def __init__(self, array):
             """массив из read_order"""
@@ -201,11 +215,11 @@ class Shop:
                 self.order_prioritet = 2
 
             self.check_errors()
-            if self.is_error == 0:
+            if self.is_valid:
                 self.order_country = self.order_adress.split(".")[0]
                 self.order_adress_without_country = self.order_adress[len(self.order_country) + 2:]
 
 
 
 if __name__ == '__main__':
-    shop = Shop()
+    Shop()
