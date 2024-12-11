@@ -50,17 +50,17 @@ class Shop:
             return grow_then, less_then
 
         def partition_prioritet(array, left, right):
-            x = array[left].order_country
+            x = array[left].order_prioritet
             less_then = left
             grow_then = right
             i = left + 1
 
-            while i < grow_then:
-                if array[i].order_country < x:
+            while i <= grow_then:
+                if array[i].order_prioritet < x:
                     swap(array, less_then, i)
                     less_then += 1
                     i += 1
-                elif array[i].order_country > x:
+                elif array[i].order_prioritet > x:
                     swap(array, grow_then, i)
                     grow_then -= 1
                 else:
